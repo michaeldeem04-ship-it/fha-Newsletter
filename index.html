@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FHA Community Bulletin — Frostburg Housing Authority</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EFF0E8;
+    --card: #FBFAF5;
+    --ink: #23261F;
+    --ink-soft: #52564A;
+    --pine: #1F3D33;
+    --pine-dark: #16291F;
+    --gold: #C7963C;
+    --gold-light: #E7C77A;
+    --brick: #8B3A2B;
+    --line: #D9D8C9;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(23, 26, 20, 0.08);
+    --shadow-lift: 0 8px 24px rgba(23, 26, 20, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Fraunces', Georgia, serif;
+    color: var(--pine-dark);
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.03em;
+  }
+
+  a { color: var(--pine-dark); }
+
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--brick);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    background: var(--pine);
+    color: #F3F2E8;
+    border-bottom: 5px solid var(--gold);
+  }
+  .masthead-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 24px;
+  }
+  .masthead-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+  .masthead h1 {
+    color: #FBFAF5;
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 700;
+  }
+  .masthead p {
+    color: #D9DFD8;
+    margin-top: 8px;
+    font-size: 17px;
+    max-width: 55ch;
+  }
+
+  nav.tabs {
+    background: var(--pine-dark);
+  }
+  .tabs-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .tabs button {
+    background: none;
+    border: none;
+    color: #C9D2C6;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    border-bottom: 3px solid transparent;
+    min-height: 48px;
+  }
+  .tabs button:hover { color: #FBFAF5; }
+  .tabs button[aria-current="page"] {
+    color: #FBFAF5;
+    border-bottom-color: var(--gold);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* ---------- Layout ---------- */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+  .view { display: none; }
+  .view.active { display: block; animation: fade-in 0.25s ease; }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  section + section { margin-top: 40px; }
+
+  /* ---------- Home nav cards ---------- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .nav-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    text-align: left;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 120px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .nav-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .nav-card .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--brick);
+  }
+  .nav-card h3 { font-size: 21px; color: var(--pine-dark); }
+  .nav-card span.desc { color: var(--ink-soft); font-size: 15px; }
+
+  .welcome-strip {
+    background: var(--card);
+    border-left: 4px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 20px;
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+
+  /* ---------- Issue cards (pinboard motif) ---------- */
+  .issue-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 22px;
+    margin-top: 24px;
+  }
+  .issue-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 18px 18px;
+    position: relative;
+    box-shadow: var(--shadow);
+    text-align: left;
+    transform: rotate(var(--tilt, 0deg));
+  }
+  .issue-card:nth-child(3n+1) { --tilt: -0.6deg; }
+  .issue-card:nth-child(3n+2) { --tilt: 0.5deg; }
+  .issue-card:nth-child(3n)   { --tilt: -0.3deg; }
+  .issue-card::before {
+    content: "";
+    position: absolute;
+    top: -6px; left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--brick);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .issue-card .issue-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--brick);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .issue-card h3 { margin-top: 6px; font-size: 19px; }
+  .issue-card p { color: var(--ink-soft); font-size: 14px; margin: 8px 0 14px; }
+  .btn {
+    display: inline-block;
+    background: var(--pine);
+    color: #FBFAF5;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 15px;
+    min-height: 44px;
+    text-decoration: none;
+  }
+  .btn:hover { background: var(--pine-dark); }
+  .btn-ghost {
+    background: none;
+    border: 1.5px solid var(--pine);
+    color: var(--pine-dark);
+  }
+  .btn-ghost:hover { background: var(--pine); color: #fff; }
+
+  /* ---------- Viewer ---------- */
+  .viewer-frame {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px;
+    box-shadow: var(--shadow);
+  }
+  .viewer-frame iframe {
+    width: 100%;
+    height: 640px;
+    border: none;
+    border-radius: 6px;
+    background: #fff;
+  }
+  .viewer-note {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 18px;
+    background: none;
+    border: none;
+    color: var(--pine-dark);
+    padding: 4px 0;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+  }
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 18px 4px;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--pine-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+  }
+  .faq-q .plus { font-family: 'IBM Plex Mono', monospace; color: var(--brick); font-size: 20px; flex-shrink: 0; }
+  .faq-a {
+    display: none;
+    padding: 0 4px 20px;
+    color: var(--ink-soft);
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .plus { transform: rotate(45deg); }
+  .faq-q .plus { transition: transform 0.15s ease; }
+
+  /* ---------- Help desk (scripted, no AI) ---------- */
+  .privacy-note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #EAF0EA;
+    border: 1px solid #BFD2BF;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--pine-dark);
+    margin-bottom: 20px;
+  }
+  .privacy-note .dot {
+    flex-shrink: 0;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--pine);
+    margin-top: 7px;
+  }
+
+  .help-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: var(--shadow);
+  }
+
+  .help-breadcrumb {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 0;
+    margin-bottom: 14px;
+  }
+  .help-breadcrumb:hover { color: var(--pine-dark); }
+
+  .help-bubble {
+    background: var(--paper);
+    border-radius: 12px;
+    border-top-left-radius: 4px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    font-size: 17px;
+    color: var(--ink);
+  }
+
+  .help-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .help-option {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--pine-dark);
+    min-height: 48px;
+  }
+  .help-option:hover { border-color: var(--pine); background: #F3F6F2; }
+
+  .agent-card {
+    border: 1.5px dashed var(--brick);
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 8px;
+    background: #FBF3EF;
+  }
+  .agent-card h4 { color: var(--brick); font-size: 16px; margin-bottom: 6px; }
+  .agent-card p { color: var(--ink-soft); font-size: 14px; margin: 0 0 14px; }
+
+  .guide-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .guide-step {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    box-shadow: var(--shadow);
+  }
+  .guide-step-num {
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--pine);
+    color: #fff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .guide-step-body { flex: 1; min-width: 0; }
+  .guide-step-image {
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 16 / 10;
+    background: repeating-linear-gradient(45deg, #E7E5D8, #E7E5D8 10px, #DEDCCB 10px, #DEDCCB 20px);
+    border: 1.5px dashed var(--line);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-size: 13px;
+    text-align: center;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  .guide-step-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .guide-step-caption {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  @media print {
+    .masthead, nav.tabs, .back-link, #guide-print, footer { display: none !important; }
+    .guide-step { break-inside: avoid; box-shadow: none; }
+  }
+
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 24px 50px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    border-top: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-eyebrow">Frostburg Housing Authority</div>
+    <h1>The FHA Community Bulletin</h1>
+    <p>Newsletters, updates, and answers — all in one place, ready whenever you need them.</p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Site sections">
+  <div class="tabs-inner">
+    <button data-view="home" aria-current="page">Home</button>
+    <button data-view="archive">Past Issues</button>
+    <button data-view="guides">Step-by-Step Guides</button>
+    <button data-view="faq">FAQ</button>
+    <button data-view="ask">Ask a Question</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HOME -->
+  <div class="view active" id="view-home">
+    <div class="welcome-strip">
+      Welcome! This page holds every issue of the FHA newsletter, answers to common questions, and a way to send us your own question or comment.
+    </div>
+    <div class="card-grid">
+      <button class="nav-card" data-goto="latest">
+        <span class="tag">This month</span>
+        <h3>Read the Latest Issue</h3>
+        <span class="desc">Open the newest FHA newsletter right now.</span>
+      </button>
+      <button class="nav-card" data-goto="archive">
+        <span class="tag">Archive</span>
+        <h3>Browse Past Issues</h3>
+        <span class="desc">Every newsletter we've published, in one list.</span>
+      </button>
+      <button class="nav-card" data-goto="guides">
+        <span class="tag">Show me how</span>
+        <h3>Step-by-Step Guides</h3>
+        <span class="desc">Picture guides for paying rent, work orders, and more.</span>
+      </button>
+      <button class="nav-card" data-goto="faq">
+        <span class="tag">Answers</span>
+        <h3>Frequently Asked Questions</h3>
+        <span class="desc">Common questions from residents, answered.</span>
+      </button>
+      <button class="nav-card" data-goto="ask">
+        <span class="tag">Get in touch</span>
+        <h3>Ask a Question</h3>
+        <span class="desc">Send a question or comment to FHA staff.</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ARCHIVE -->
+  <div class="view" id="view-archive">
+    <h2>Past Issues</h2>
+    <p style="color:var(--ink-soft)">Tap any issue to read it.</p>
+    <div class="issue-list" id="issue-list"></div>
+  </div>
+
+  <!-- VIEWER -->
+  <div class="view" id="view-reader">
+    <button class="back-link" data-goto="archive">&larr; Back to Past Issues</button>
+    <h2 id="reader-title">Issue title</h2>
+    <div class="viewer-frame">
+      <iframe id="reader-frame" title="Newsletter issue" loading="lazy"></iframe>
+    </div>
+    <p class="viewer-note">Having trouble viewing this? <a href="#" id="reader-direct-link">Open it in a new tab instead</a>.</p>
+  </div>
+
+  <!-- GUIDES -->
+  <div class="view" id="view-guides">
+    <h2>Step-by-Step Guides</h2>
+    <p style="color:var(--ink-soft)">Pictures and short instructions, one step at a time. Tap a guide to open it.</p>
+    <div class="issue-list" id="guide-list"></div>
+  </div>
+
+  <!-- GUIDE READER -->
+  <div class="view" id="view-guide-reader">
+    <button class="back-link" data-goto="guides">&larr; Back to Guides</button>
+    <h2 id="guide-title">Guide title</h2>
+    <button class="btn btn-ghost" id="guide-print" style="margin:10px 0 20px">Print this guide</button>
+    <ol class="guide-steps" id="guide-steps"></ol>
+  </div>
+
+  <!-- FAQ -->
+  <div class="view" id="view-faq">
+    <h2>Frequently Asked Questions</h2>
+    <p style="color:var(--ink-soft)">Don't see your question here? <button class="back-link" style="display:inline;margin:0;padding:0;font-size:16px" data-goto="ask">ask us directly</button>.</p>
+    <div id="faq-list" style="margin-top:16px"></div>
+  </div>
+
+  <!-- ASK -->
+  <div class="view" id="view-ask">
+    <h2>Get Help</h2>
+    <p style="color:var(--ink-soft);max-width:60ch">
+      Pick what you need below. If we don't have an answer for it, you can reach a staff member directly.
+    </p>
+    <div class="privacy-note">
+      <span class="dot"></span>
+      <span>This isn't a live chat and nothing you click here is saved or tracked. If you reach "Talk to a live agent," it opens your own email app — we only see your message if you choose to send it.</span>
+    </div>
+    <div class="help-box">
+      <button class="help-breadcrumb" id="help-back" style="display:none">&larr; Start over</button>
+      <div class="help-bubble" id="help-prompt"></div>
+      <div class="help-options" id="help-options"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Frostburg Housing Authority &middot; Questions about rent, work orders, or your lease should go through the resident portal, not this page.
+</footer>
+
+<script>
+/* ============================================================
+   EDIT THIS SECTION to add newsletter issues and FAQ entries.
+   No other code needs to change.
+   ============================================================ */
+
+const ISSUES = [
+  {
+    id: "2026-07",
+    title: "July 2026",
+    summary: "Placeholder — replace with this month's headline.",
+    embedUrl: "about:blank",   // paste the Canva "Publish" embed link here
+    directUrl: "#"             // paste the Canva share link here (fallback)
+  },
+  {
+    id: "2026-06",
+    title: "June 2026",
+    summary: "Placeholder — replace with June's headline.",
+    embedUrl: "about:blank",
+    directUrl: "#"
+  },
+  {
+    id: "2026-05",
+    title: "May 2026",
+    summary: "Placeholder — replace with May's headline.",
+    embedUrl: "about:blank",
+    directUrl: "#"
+  }
+];
+
+const FAQS = [
+  {
+    q: "How do I submit a maintenance request?",
+    a: "Maintenance requests go through the resident portal or by calling the office directly — this page is only for newsletter questions and general comments."
+  },
+  {
+    q: "How often does the newsletter come out?",
+    a: "A new issue is published each month and added to the Past Issues page here."
+  },
+  {
+    q: "Can I get a paper copy of the newsletter?",
+    a: "Yes — paper copies are available at the FHA office front desk. Let staff know if you'd like one mailed to you instead."
+  }
+];
+
+/* Picture step-by-step guides. Replace imageUrl with a real screenshot's file path
+   (e.g. "images/pay-rent-step1.png") once you have one — until then a placeholder
+   box shows so you can see the layout. Keep each caption to one short instruction. */
+const GUIDES = [
+  {
+    id: "pay-rent",
+    title: "How to Pay Rent",
+    steps: [
+      { imageUrl: "", caption: "Open the resident portal website or app." },
+      { imageUrl: "", caption: "Log in with your username and password." },
+      { imageUrl: "", caption: "Tap the button that says \"Pay Rent\" or \"Make a Payment.\"" },
+      { imageUrl: "", caption: "Enter the amount and your payment method, then tap \"Submit.\"" },
+      { imageUrl: "", caption: "Look for a confirmation message — that means it worked." }
+    ]
+  },
+  {
+    id: "work-order",
+    title: "How to Submit a Work Order",
+    steps: [
+      { imageUrl: "", caption: "Open the resident portal website or app." },
+      { imageUrl: "", caption: "Log in with your username and password." },
+      { imageUrl: "", caption: "Tap the button that says \"Maintenance\" or \"Submit a Request.\"" },
+      { imageUrl: "", caption: "Describe the problem in a few words and tap \"Submit.\"" },
+      { imageUrl: "", caption: "Write down or screenshot your confirmation number." }
+    ]
+  }
+];
+
+// Where "Talk to a live agent" sends the email, and who it's addressed to on-screen.
+const AGENT_EMAIL = "digitalnav@frostburghousing.org";
+const AGENT_DISPLAY_NAME = "FHA staff";
+
+/* Scripted help-desk tree. No AI — every reply here is written by staff.
+   Each node is either:
+   - a branch:  { prompt, options: [{ label, to }] }
+   - an answer: { answer, to: "root" }  (options after an answer are added automatically) */
+const HELP_TREE = {
+  root: {
+    prompt: "What can we help with?",
+    options: [
+      { label: "Newsletter questions", to: "newsletter" },
+      { label: "Rent & payments", to: "rent" },
+      { label: "Maintenance requests", to: "maintenance" },
+      { label: "Something else", to: "agent" }
+    ]
+  },
+  newsletter: {
+    prompt: "What about the newsletter?",
+    options: [
+      { label: "How often does it come out?", to: "nl-freq" },
+      { label: "Can I get a paper copy?", to: "nl-paper" },
+      { label: "None of these", to: "agent" }
+    ]
+  },
+  "nl-freq": {
+    answer: "A new issue is published each month and added to the Past Issues page on this site.",
+    to: "root"
+  },
+  "nl-paper": {
+    answer: "Yes — paper copies are available at the FHA office front desk. Let staff know if you'd like one mailed to you instead.",
+    to: "root"
+  },
+  rent: {
+    prompt: "What about rent or payments?",
+    options: [
+      { label: "Where do I pay rent?", to: "rent-where" },
+      { label: "Something else about my account", to: "agent" }
+    ]
+  },
+  "rent-where": {
+    answer: "Rent payments go through the resident portal, not this site. If you're not sure how to access the portal, staff can help you get set up.",
+    to: "root"
+  },
+  maintenance: {
+    prompt: "What about maintenance?",
+    options: [
+      { label: "How do I submit a request?", to: "maint-submit" },
+      { label: "None of these", to: "agent" }
+    ]
+  },
+  "maint-submit": {
+    answer: "Maintenance requests go through the resident portal or by calling the office directly — this site doesn't handle maintenance requests.",
+    to: "root"
+  },
+  agent: { agent: true }
+};
+
+/* ============================================================
+   Site logic — no need to edit below this line.
+   ============================================================ */
+
+const views = document.querySelectorAll('.view');
+const tabButtons = document.querySelectorAll('.tabs button');
+
+function showView(name) {
+  views.forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+  tabButtons.forEach(b => {
+    if (b.dataset.view === name) b.setAttribute('aria-current', 'page');
+    else b.removeAttribute('aria-current');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('[data-goto]').forEach(el => {
+  el.addEventListener('click', () => {
+    const target = el.dataset.goto;
+    if (target === 'latest') {
+      openIssue(ISSUES[0]);
+    } else {
+      showView(target);
+    }
+  });
+});
+
+tabButtons.forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
+
+function openIssue(issue) {
+  document.getElementById('reader-title').textContent = issue.title;
+  document.getElementById('reader-frame').src = issue.embedUrl;
+  document.getElementById('reader-direct-link').href = issue.directUrl;
+  showView('reader');
+}
+
+function renderIssues() {
+  const list = document.getElementById('issue-list');
+  list.innerHTML = '';
+  ISSUES.forEach(issue => {
+    const card = document.createElement('div');
+    card.className = 'issue-card';
+    card.innerHTML = `
+      <div class="issue-date mono">${issue.id}</div>
+      <h3>${issue.title}</h3>
+      <p>${issue.summary}</p>
+      <button class="btn">Read Issue</button>
+    `;
+    card.querySelector('.btn').addEventListener('click', () => openIssue(issue));
+    list.appendChild(card);
+  });
+}
+
+function renderFaq() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = '';
+  FAQS.forEach((item, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'faq-item';
+    wrap.innerHTML = `
+      <button class="faq-q" aria-expanded="false">
+        <span>${item.q}</span>
+        <span class="plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">${item.a}</div>
+    `;
+    const btn = wrap.querySelector('.faq-q');
+    btn.addEventListener('click', () => {
+      const open = wrap.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    });
+    list.appendChild(wrap);
+  });
+}
+
+renderIssues();
+renderFaq();
+renderGuides();
+
+function renderGuides() {
+  const list = document.getElementById('guide-list');
+  list.innerHTML = '';
+  GUIDES.forEach(guide => {
+    const card = document.createElement('div');
+    card.className = 'issue-card';
+    card.innerHTML = `
+      <div class="issue-date mono">${guide.steps.length} steps</div>
+      <h3>${guide.title}</h3>
+      <p>Pictures and short instructions, one step at a time.</p>
+      <button class="btn">Open Guide</button>
+    `;
+    card.querySelector('.btn').addEventListener('click', () => openGuide(guide));
+    list.appendChild(card);
+  });
+}
+
+function openGuide(guide) {
+  document.getElementById('guide-title').textContent = guide.title;
+  const stepsEl = document.getElementById('guide-steps');
+  stepsEl.innerHTML = '';
+  guide.steps.forEach((step, i) => {
+    const li = document.createElement('li');
+    li.className = 'guide-step';
+    const imageHtml = step.imageUrl
+      ? `<img src="${step.imageUrl}" alt="${step.caption}">`
+      : `Photo goes here`;
+    li.innerHTML = `
+      <div class="guide-step-num">${i + 1}</div>
+      <div class="guide-step-body">
+        <div class="guide-step-image">${imageHtml}</div>
+        <div class="guide-step-caption">${step.caption}</div>
+      </div>
+    `;
+    stepsEl.appendChild(li);
+  });
+  showView('guide-reader');
+}
+
+document.getElementById('guide-print').addEventListener('click', () => window.print());
+
+/* ---------- Scripted help desk ---------- */
+let helpHistory = [];
+
+function renderHelp(nodeId) {
+  const node = HELP_TREE[nodeId];
+  const promptEl = document.getElementById('help-prompt');
+  const optionsEl = document.getElementById('help-options');
+  const backBtn = document.getElementById('help-back');
+  optionsEl.innerHTML = '';
+
+  if (node.agent) {
+    promptEl.textContent = "Talk to a live agent";
+    const subject = encodeURIComponent("Question from the FHA newsletter site");
+    const body = encodeURIComponent("Hi, I have a question that wasn't covered in the site's help section:\n\n");
+    optionsEl.innerHTML = `
+      <div class="agent-card">
+        <h4>Send us an email</h4>
+        <p>This opens your email app with our address filled in. Nothing you write is stored on this site — only what you choose to send.</p>
+        <a class="btn" href="mailto:${AGENT_EMAIL}?subject=${subject}&body=${body}">Email ${AGENT_DISPLAY_NAME}</a>
+      </div>
+    `;
+    const startOver = document.createElement('button');
+    startOver.className = 'help-option';
+    startOver.style.marginTop = '14px';
+    startOver.textContent = 'Start over';
+    startOver.addEventListener('click', () => goHelp('root', true));
+    optionsEl.appendChild(startOver);
+  } else if (node.answer) {
+    promptEl.textContent = node.answer;
+    const helpfulBtn = document.createElement('button');
+    helpfulBtn.className = 'help-option';
+    helpfulBtn.textContent = 'That answers it — start over';
+    helpfulBtn.addEventListener('click', () => goHelp('root', true));
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'help-option';
+    moreBtn.textContent = "That didn't answer it — talk to a live agent";
+    moreBtn.addEventListener('click', () => goHelp('agent'));
+    optionsEl.appendChild(helpfulBtn);
+    optionsEl.appendChild(moreBtn);
+  } else {
+    promptEl.textContent = node.prompt;
+    node.options.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'help-option';
+      b.textContent = opt.label;
+      b.addEventListener('click', () => goHelp(opt.to));
+      optionsEl.appendChild(b);
+    });
+  }
+
+  backBtn.style.display = nodeId === 'root' ? 'none' : 'inline-block';
+}
+
+function goHelp(nodeId, reset) {
+  if (reset) helpHistory = [];
+  else helpHistory.push(nodeId);
+  renderHelp(nodeId);
+}
+
+document.getElementById('help-back').addEventListener('click', () => goHelp('root', true));
+renderHelp('root');
+
+// Reset the help desk to the start each time someone opens the Ask tab.
+document.querySelectorAll('[data-view="ask"], [data-goto="ask"]').forEach(el => {
+  el.addEventListener('click', () => goHelp('root', true));
+});
+</script>
+
+</body>
+</html>
