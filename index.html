@@ -370,6 +370,35 @@
   }
   .agent-card h4 { color: var(--brick); font-size: 16px; margin-bottom: 6px; }
   .agent-card p { color: var(--ink-soft); font-size: 14px; margin: 0 0 14px; }
+  .email-copy-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .email-copy-row span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    color: var(--ink);
+    word-break: break-all;
+  }
+  .copy-btn {
+    background: none;
+    border: 1.5px solid var(--pine);
+    color: var(--pine-dark);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+    min-height: 40px;
+  }
+  .copy-btn:hover { background: var(--pine); color: #fff; }
 
   .guide-steps {
     list-style: none;
@@ -834,8 +863,34 @@ function renderHelp(nodeId) {
         <h4>Send us an email</h4>
         <p>This opens your email app with our address filled in. Nothing you write is stored on this site — only what you choose to send.</p>
         <a class="btn" href="mailto:${AGENT_EMAIL}?subject=${subject}&body=${body}">Email ${AGENT_DISPLAY_NAME}</a>
+        <div class="email-copy-row">
+          <span id="agent-email-text">${AGENT_EMAIL}</span>
+          <button class="copy-btn" id="agent-copy-btn" type="button">Copy address</button>
+        </div>
+        <p style="margin-top:10px;font-size:13px">If the button above doesn't open anything, copy the address and send it from your email app directly.</p>
       </div>
     `;
+    const copyBtn = document.getElementById('agent-copy-btn');
+    copyBtn.addEventListener('click', () => {
+      const finish = () => {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => { copyBtn.textContent = 'Copy address'; }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(AGENT_EMAIL).then(finish).catch(() => fallbackCopy());
+      } else {
+        fallbackCopy();
+      }
+      function fallbackCopy() {
+        const temp = document.createElement('textarea');
+        temp.value = AGENT_EMAIL;
+        document.body.appendChild(temp);
+        temp.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(temp);
+        finish();
+      }
+    });
     const startOver = document.createElement('button');
     startOver.className = 'help-option';
     startOver.style.marginTop = '14px';
